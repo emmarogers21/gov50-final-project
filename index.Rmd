@@ -12,6 +12,7 @@ output:
 Does having a child enhance support of abortion? In this study, I plan to examine the correlation between parental status and support of pro-choice policy. I hypothesize that having a child will increase support for abortion amongst female voters more than male voters. Access to abortion has been a key principle for feminist movements, so it would be likely that female voters would support the choice to have an abortion more than male voters. Female voters who have a child might be more supportive of pro-choice policy if they have a daughter and are concerned for their future, if they did not have access to abortion when they were pregnant, etc.  I will be analyzing data from the Cooperative Congressional Election Study (CCES) that was conducted in 2018. My explanatory variables include gender and child (being a parent/guardian to a child under the age of 18). These are measured through survey questions conducted by YouGov before the 2018 elections. My outcome variable of interest is an answer to a question of whether the voter supports or opposes the proposal to always allow a woman to obtain an abortion as a matter of choice (a measurement of pro-choice). If I observe greater support for this proposal amongst female parents/guardians, this would provide support for my hypothesis. If, on the other hand, I observe greater support for this proposal amongst male voters or no correlation between the child variable and the outcome, this would provide evidence against my hypothesis.
 
 ```{r}
+load("~/Documents/Gov50/gov50-final-project/cces18_common_vv.RData")
 library(tidyverse)
 CCES18 <- x
 abortion_data <- CCES18 |>
@@ -28,7 +29,6 @@ abortion_data <- CCES18 |>
     abortion = if_else(CC18_321a == 1, "Pro-Choice", "Pro-Life")
   ) |>
   select(gender, educ, party, religion, child, abortion, pro_choice) 
-abortion_data
 ```
 
 ```{r}
