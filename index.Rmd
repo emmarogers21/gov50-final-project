@@ -8,14 +8,49 @@ output:
 ---
 
 
-
-## Project thoughts
-
-I am interested in exploring data related to racial and gender inequalities. More specifically, I am considering analyzing data regarding discrimination in housing and/or income in the United States as well as the effects of living in an urban or rural environment. By studying these issues more closely, I hope to gain insight into how we can provide more affordable and equitable housing and decrease the current wage gaps.
-
 ## Proposal
-Does the proportion of Black Covid cases increase depending on the location within the United States? In this study, I plan to examine the disproportionate impact
-of COVID-19 on Black communities in the United States. I hypothesize that southern states will have larger numbers of cases and deaths for Black citizens due to the relaxed restrictions in southern states such as Florida and Texas during the pandemic as well as historical racial discrimination in conservative southern states. I will be using data collected by Data for Black Lives that extracted data from state websites that reported covid-19 infections and deaths by race. My explanatory variable is location which indicates the state that the cases/deaths were reported. The outcome variable is the percent of Black cases out of total cases in a given state. After running my regression, if there is correlation between state and cases that depicts a trend by geographic region, then my hypothesis can be supported. If there is no correlation between state and cases or there is no variation between states in the south and states in the north for example, then my hypothesis will be disproved.
+Does having a child enhance support of abortion? In this study, I plan to examine the correlation between parental status and support of pro-choice policy. I hypothesize that having a child will increase support for abortion amongst female voters more than male voters. Access to abortion has been a key principle for feminist movements, so it would be likely that female voters would support the choice to have an abortion more than male voters. Female voters who have a child might be more supportive of pro-choice policy if they have a daughter and are concerned for their future, if they did not have access to abortion when they were pregnant, etc.  I will be analyzing data from the Cooperative Congressional Election Study (CCES) that was conducted in 2018. My explanatory variables include gender and child (being a parent/guardian to a child under the age of 18). These are measured through survey questions conducted by YouGov before the 2018 elections. My outcome variable of interest is an answer to a question of whether the voter supports or opposes the proposal to always allow a woman to obtain an abortion as a matter of choice (a measurement of pro-choice). If I observe greater support for this proposal amongst female parents/guardians, this would provide support for my hypothesis. If, on the other hand, I observe greater support for this proposal amongst male voters or no correlation between the child variable and the outcome, this would provide evidence against my hypothesis.
 
-data: https://www.kaggle.com/datasets/kkhandekar/impact-of-covid-on-black-communities
+```{r}
+library(tidyverse)
+CCES18 <- x
+abortion_data <- CCES18 |>
+  mutate(
+    gender = if_else(gender == 1, "male", "female"),
+    educ = case_when(educ == c(1, 2, 3) ~ "Non-College Grad",
+                     educ == c(4, 5, 6) ~ "College Grad"),
+    party = case_when(pid3 == 1 ~ "Democrat",
+                     pid3 == 2 ~ "Republican",
+                     pid3 == c(3, 4, 5) ~ "Independent/Other"),
+    religion = if_else(religpew == 2, "Roman Catholic", "Non-Catholic"),
+    child = if_else(child18 == 1, "Yes", "No"),
+    pro_choice = if_else(CC18_321a == 1, 1, 0),
+    abortion = if_else(CC18_321a == 1, "Pro-Choice", "Pro-Life")
+  ) |>
+  select(gender, educ, party, religion, child, abortion, pro_choice) 
+abortion_data
+```
+
+```{r}
+gender_party_plot <- abortion_data |>
+  drop_na() |>
+  group_by(gender, party) |>
+  count(pro_choice) ##|>
+##  pivot_wider(
+ ##   names_from = party,
+ ##   values_from = n
+ ## ) ##|>
+ ## ggplot(mapping = aes(x = abortion)) +
+##  geom_bar()
+gender_party_plot
+
+gender_party_plot |>
+  ggplot(mapping = aes(x = gender, y = n, fill = party)) +
+  geom_col(position = "dodge") +
+  labs(
+    x = "Gender and Party of Voter",
+    y = "Number of Pro-Choice Voters",
+    title = "Pro-Choice Voters by Gender and Party"
+  )
+```
 
