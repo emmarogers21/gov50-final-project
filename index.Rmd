@@ -35,16 +35,7 @@ abortion_data <- CCES18 |>
 gender_party_plot <- abortion_data |>
   drop_na() |>
   group_by(gender, party) |>
-  count(pro_choice) ##|>
-##  pivot_wider(
- ##   names_from = party,
- ##   values_from = n
- ## ) ##|>
- ## ggplot(mapping = aes(x = abortion)) +
-##  geom_bar()
-gender_party_plot
-
-gender_party_plot |>
+  count(pro_choice) |>
   ggplot(mapping = aes(x = gender, y = n, fill = party)) +
   geom_col(position = "dodge") +
   labs(
@@ -52,5 +43,6 @@ gender_party_plot |>
     y = "Number of Pro-Choice Voters",
     title = "Pro-Choice Voters by Gender and Party"
   )
+gender_party_plot
 ```
 
