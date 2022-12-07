@@ -115,7 +115,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["cces18_common_vv.tab","DATA.csv","FieldExp_Public.dta","gun_control.csv","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-2-1.png","index_files/figure-html5/unnamed-chunk-4-1.png","index_files/figure-html5/unnamed-chunk-5-1.png","index_files/figure-html5/unnamed-chunk-5-2.png","index_files/figure-html5/unnamed-chunk-6-1.png","index_files/header-attrs-2.16/header-attrs.js","index_files/header-attrs-2.17/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js","Social_Anxiety_Survey_Master.csv"]}
+  {"type":"character","attributes":{},"value":["CAR DETAILS FROM CAR DEKHO.csv","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/figure-html5/unnamed-chunk-2-1.png","index_files/figure-html5/unnamed-chunk-3-1.png","index_files/figure-html5/unnamed-chunk-4-1.png","index_files/figure-html5/unnamed-chunk-5-1.png","index_files/figure-html5/unnamed-chunk-5-2.png","index_files/figure-html5/unnamed-chunk-6-1.png","index_files/figure-html5/unnamed-chunk-8-1.png","index_files/header-attrs-2.16/header-attrs.js","index_files/header-attrs-2.17/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1517,188 +1517,199 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 
 <div class="d-article">
-<h2 id="proposal">Proposal</h2>
-<p>Does having a child enhance support of abortion? In this study, I plan to examine the correlation between parental status and support of pro-choice policy. I hypothesize that having a child will increase support for abortion amongst female voters more than male voters. Access to abortion has been a key principle for feminist movements, so it would be likely that female voters would support the choice to have an abortion more than male voters. Female voters who have a child might be more supportive of pro-choice policy if they have a daughter and are concerned for their future, if they did not have access to abortion when they were pregnant, etc. I will be analyzing data from the Cooperative Congressional Election Study (CCES) that was conducted in 2018. My explanatory variables include gender and child (being a parent/guardian to a child under the age of 18). These are measured through survey questions conducted by YouGov before the 2018 elections. My outcome variable of interest is an answer to a question of whether the voter supports or opposes the proposal to always allow a woman to obtain an abortion as a matter of choice (a measurement of pro-choice). If I observe greater support for this proposal amongst female parents/guardians, this would provide support for my hypothesis. If, on the other hand, I observe greater support for this proposal amongst male voters or no correlation between the child variable and the outcome, this would provide evidence against my hypothesis.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span><span class='op'>(</span><span class='st'>"~/Documents/Gov50/gov50-final-project/cces18_common_vv.RData"</span><span class='op'>)</span></span>
-<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
-<span><span class='va'>CCES18</span> <span class='op'>&lt;-</span> <span class='va'>x</span></span>
-<span><span class='va'>abortion_data</span> <span class='op'>&lt;-</span> <span class='va'>CCES18</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span></span>
-<span>    gender <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>gender</span> <span class='op'>==</span> <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span>,</span>
-<span>    gender_name <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>gender</span> <span class='op'>==</span> <span class='fl'>1</span>, <span class='st'>"female"</span>, <span class='st'>"male"</span><span class='op'>)</span>,</span>
-<span>    educ_name <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span><span class='va'>educ</span> <span class='op'>==</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span><span class='op'>)</span> <span class='op'>~</span> <span class='st'>"Non-College Grad"</span>,</span>
-<span>                     <span class='va'>educ</span> <span class='op'>==</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>6</span><span class='op'>)</span> <span class='op'>~</span> <span class='st'>"College Grad"</span><span class='op'>)</span>,</span>
-<span>    party <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/case_when.html'>case_when</a></span><span class='op'>(</span><span class='va'>pid3</span> <span class='op'>==</span> <span class='fl'>1</span> <span class='op'>~</span> <span class='st'>"Democrat"</span>,</span>
-<span>                     <span class='va'>pid3</span> <span class='op'>==</span> <span class='fl'>2</span> <span class='op'>~</span> <span class='st'>"Republican"</span>,</span>
-<span>                     <span class='va'>pid3</span> <span class='op'>==</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span><span class='op'>)</span> <span class='op'>~</span> <span class='st'>"Independent/Other"</span><span class='op'>)</span>,</span>
-<span>    religion <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>religpew</span> <span class='op'>==</span> <span class='fl'>2</span>, <span class='st'>"Roman Catholic"</span>, <span class='st'>"Non-Catholic"</span><span class='op'>)</span>,</span>
-<span>    child <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>child18</span> <span class='op'>==</span> <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span>,</span>
-<span>    child_name <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>child18</span> <span class='op'>==</span> <span class='fl'>1</span>, <span class='st'>"Child"</span>, <span class='st'>"No Child"</span><span class='op'>)</span>,</span>
-<span>    pro_choice <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>CC18_321a</span> <span class='op'>==</span> <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span><span class='op'>)</span>,</span>
-<span>    abortion <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/if_else.html'>if_else</a></span><span class='op'>(</span><span class='va'>CC18_321a</span> <span class='op'>==</span> <span class='fl'>1</span>, <span class='st'>"Pro-Choice"</span>, <span class='st'>"Pro-Life"</span><span class='op'>)</span>,</span>
-<span>    age <span class='op'>=</span> <span class='fl'>2018</span> <span class='op'>-</span> <span class='va'>birthyr</span></span>
-<span>  <span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>age</span>, <span class='va'>gender</span>, <span class='va'>gender_name</span>, <span class='va'>educ</span>, <span class='va'>educ_name</span>, <span class='va'>pid3</span>, <span class='va'>party</span>, <span class='va'>religion</span>, <span class='va'>child</span>, <span class='va'>child_name</span>, <span class='va'>abortion</span>, <span class='va'>pro_choice</span><span class='op'>)</span> </span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>cars</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"CAR DETAILS FROM CAR DEKHO.csv"</span><span class='op'>)</span></span>
+<span><span class='va'>cars</span> <span class='op'>&lt;-</span> <span class='va'>cars</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>fuel</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Diesel"</span>, <span class='st'>"Petrol"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>age <span class='op'>=</span> <span class='fl'>2020</span> <span class='op'>-</span> <span class='va'>year</span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>gender_party_plot</span> <span class='op'>&lt;-</span> <span class='va'>abortion_data</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/drop_na.html'>drop_na</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>gender_name</span>, <span class='va'>party</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/count.html'>count</a></span><span class='op'>(</span><span class='va'>pro_choice</span><span class='op'>)</span> </span>
-<span><span class='va'>gender_party_plot</span> <span class='op'>&lt;-</span> <span class='va'>gender_party_plot</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>gender_name</span>, y <span class='op'>=</span> <span class='va'>n</span>, fill <span class='op'>=</span> <span class='va'>party</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span>position <span class='op'>=</span> <span class='st'>"dodge"</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span></span>
-<span>    x <span class='op'>=</span> <span class='st'>"Gender and Party of Voter"</span>,</span>
-<span>    y <span class='op'>=</span> <span class='st'>"Number of Pro-Choice Voters"</span>,</span>
-<span>    title <span class='op'>=</span> <span class='st'>"Pro-Choice Voters by Gender and Party"</span></span>
-<span>  <span class='op'>)</span></span>
-<span><span class='va'>gender_party_plot</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>cars</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>selling_price</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_histogram.html'>geom_histogram</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"black"</span>, fill <span class='op'>=</span> <span class='st'>"darkslategray1"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Price of Used Car (in dollars)"</span>,</span>
+<span>       y <span class='op'>=</span> <span class='st'>"Number of Cars Sold"</span>,</span>
+<span>       title <span class='op'>=</span> <span class='st'>"Selling Prices of Used Cars"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_abline.html'>geom_vline</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>xintercept <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>selling_price</span><span class='op'>)</span><span class='op'>)</span>, color <span class='op'>=</span> <span class='st'>"indianred"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_abline.html'>geom_vline</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>xintercept <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/median.html'>median</a></span><span class='op'>(</span><span class='va'>selling_price</span><span class='op'>)</span><span class='op'>)</span>, color <span class='op'>=</span> <span class='st'>"blue1"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_classic</a></span><span class='op'>(</span><span class='op'>)</span> </span></code></pre>
 </div>
 <p><img src="index_files/figure-html5/unnamed-chunk-2-1.png" width="624" /></p>
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>abortion_data</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/drop_na.html'>drop_na</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>abortion</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/context.html'>n</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>prop <span class='op'>=</span> <span class='va'>n</span> <span class='op'>/</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>cars</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>selling_price</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_histogram.html'>geom_histogram</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"black"</span>, fill <span class='op'>=</span> <span class='st'>"darkslategray1"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Price of Used Car (in dollars)"</span>,</span>
+<span>       y <span class='op'>=</span> <span class='st'>"Number of Cars Sold"</span>,</span>
+<span>       title <span class='op'>=</span> <span class='st'>"Selling Prices of Used Cars"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_abline.html'>geom_vline</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>xintercept <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>selling_price</span><span class='op'>)</span><span class='op'>)</span>, color <span class='op'>=</span> <span class='st'>"indianred"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_abline.html'>geom_vline</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>xintercept <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/median.html'>median</a></span><span class='op'>(</span><span class='va'>selling_price</span><span class='op'>)</span><span class='op'>)</span>, color <span class='op'>=</span> <span class='st'>"blue1"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_classic</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>facet_wrap</a></span><span class='op'>(</span><span class='op'>~</span> <span class='va'>fuel</span><span class='op'>)</span></span></code></pre>
 </div>
-<pre><code># A tibble: 2 × 3
-  abortion       n  prop
-  &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt;
-1 Pro-Choice  8242 0.603
-2 Pro-Life    5433 0.397</code></pre>
+<p><img src="index_files/figure-html5/unnamed-chunk-3-1.png" width="624" /></p>
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>gender_abortion_plot</span> <span class='op'>&lt;-</span><span class='va'>abortion_data</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/drop_na.html'>drop_na</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>gender_name</span>, <span class='va'>abortion</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/context.html'>n</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>prop <span class='op'>=</span> <span class='va'>n</span> <span class='op'>/</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>n</span><span class='op'>)</span></span>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://broom.tidymodels.org/'>broom</a></span><span class='op'>)</span></span>
 <span></span>
-<span><span class='va'>gender_abortion_plot</span></span></code></pre>
+<span><span class='va'>fit_price</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>selling_price</span> <span class='op'>~</span> <span class='va'>km_driven</span>, data <span class='op'>=</span> <span class='va'>cars</span><span class='op'>)</span></span>
+<span><span class='va'>fit_price</span></span></code></pre>
 </div>
-<pre><code># A tibble: 4 × 3
-# Groups:   gender_name [2]
-  gender_name abortion    prop
-  &lt;chr&gt;       &lt;chr&gt;      &lt;dbl&gt;
-1 female      Pro-Choice 0.632
-2 female      Pro-Life   0.368
-3 male        Pro-Choice 0.559
-4 male        Pro-Life   0.441</code></pre>
+<pre><code>
+Call:
+lm(formula = selling_price ~ km_driven, data = cars)
+
+Coefficients:
+(Intercept)    km_driven  
+ 664820.724       -2.372  </code></pre>
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>gender_abortion_plot</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>gender_name</span>, y <span class='op'>=</span> <span class='va'>prop</span>, fill <span class='op'>=</span> <span class='va'>abortion</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span>position <span class='op'>=</span> <span class='st'>"dodge"</span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://generics.r-lib.org/reference/glance.html'>glance</a></span><span class='op'>(</span><span class='va'>fit_price</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 1 × 12
+  r.squa…¹ adj.r…²  sigma stati…³  p.value    df  logLik    AIC    BIC
+     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+1   0.0364  0.0362 5.71e5    161. 2.44e-36     1 -62746. 1.25e5 1.26e5
+# … with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;,
+#   nobs &lt;int&gt;, and abbreviated variable names ¹​r.squared,
+#   ²​adj.r.squared, ³​statistic</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>mult_fit</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>selling_price</span> <span class='op'>~</span> <span class='va'>km_driven</span> <span class='op'>+</span> <span class='va'>fuel</span>, data <span class='op'>=</span> <span class='va'>cars</span><span class='op'>)</span></span>
+<span><span class='va'>mult_fit</span></span></code></pre>
+</div>
+<pre><code>
+Call:
+lm(formula = selling_price ~ km_driven + fuel, data = cars)
+
+Coefficients:
+(Intercept)    km_driven   fuelPetrol  
+  9.634e+05   -3.696e+00   -4.251e+05  </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://generics.r-lib.org/reference/glance.html'>glance</a></span><span class='op'>(</span><span class='va'>mult_fit</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 1 × 12
+  r.squ…¹ adj.r…²  sigma stati…³   p.value    df  logLik    AIC    BIC
+    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+1   0.159   0.158 5.34e5    403. 5.89e-161     2 -62456. 1.25e5 1.25e5
+# … with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;,
+#   nobs &lt;int&gt;, and abbreviated variable names ¹​r.squared,
+#   ²​adj.r.squared, ³​statistic</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>cars</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>km_driven</span>, y <span class='op'>=</span> <span class='va'>selling_price</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span>alpha <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/lims.html'>ylim</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>10000000</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_smooth.html'>geom_smooth</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"lm"</span>, se <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Distance Traveled by Car (in Kilometers)"</span>,</span>
+<span>       y <span class='op'>=</span> <span class='st'>"Price of Car"</span>,</span>
+<span>       title <span class='op'>=</span> <span class='st'>"Relationship between distance traveled by car and selling price"</span><span class='op'>)</span></span></code></pre>
 </div>
 <p><img src="index_files/figure-html5/unnamed-chunk-4-1.png" width="624" /></p>
 </div>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>child_abortion_plot</span> <span class='op'>&lt;-</span><span class='va'>abortion_data</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/drop_na.html'>drop_na</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>child_name</span>, <span class='va'>abortion</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/context.html'>n</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>prop <span class='op'>=</span> <span class='va'>n</span> <span class='op'>/</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>n</span><span class='op'>)</span></span>
-<span><span class='va'>child_abortion_plot</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## remove outliers</span></span>
+<span><span class='va'>cars_edit</span> <span class='op'>&lt;-</span> <span class='va'>cars</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>km_driven</span> <span class='op'>&lt;</span> <span class='fl'>5e+05</span> <span class='op'>&amp;</span> <span class='va'>selling_price</span> <span class='op'>&lt;</span> <span class='fl'>7500000</span><span class='op'>)</span></span>
+<span><span class='va'>edit_fit</span> <span class='op'>&lt;-</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>selling_price</span> <span class='op'>~</span> <span class='va'>km_driven</span>, data <span class='op'>=</span> <span class='va'>cars_edit</span><span class='op'>)</span></span>
+<span><span class='va'>edit_fit</span></span></code></pre>
 </div>
-<pre><code># A tibble: 4 × 3
-# Groups:   child_name [2]
-  child_name abortion    prop
-  &lt;chr&gt;      &lt;chr&gt;      &lt;dbl&gt;
-1 Child      Pro-Choice 0.560
-2 Child      Pro-Life   0.440
-3 No Child   Pro-Choice 0.617
-4 No Child   Pro-Life   0.383</code></pre>
+<pre><code>
+Call:
+lm(formula = selling_price ~ km_driven, data = cars_edit)
+
+Coefficients:
+(Intercept)    km_driven  
+ 672344.241       -2.557  </code></pre>
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>child_abortion_plot</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>child_name</span>, y <span class='op'>=</span> <span class='va'>prop</span>, fill <span class='op'>=</span> <span class='va'>abortion</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span>position <span class='op'>=</span> <span class='st'>"dodge"</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Voters with Child under 18 years old"</span>,</span>
-<span>       y <span class='op'>=</span> <span class='st'>"Proportion of Voters (by parental status)"</span>,</span>
-<span>       title <span class='op'>=</span> <span class='st'>"Votes on Abortion by Parental Status"</span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>cars_edit</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>km_driven</span>, y <span class='op'>=</span> <span class='va'>selling_price</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span>alpha <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_smooth.html'>geom_smooth</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"lm"</span>, se <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span></code></pre>
 </div>
 <img src="index_files/figure-html5/unnamed-chunk-5-1.png" width="624" />
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>child_abortion_plot2</span> <span class='op'>&lt;-</span><span class='va'>abortion_data</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/drop_na.html'>drop_na</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>child_name</span>, <span class='va'>abortion</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/context.html'>n</a></span><span class='op'>(</span><span class='op'>)</span>, .groups <span class='op'>=</span> <span class='st'>"drop"</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>prop <span class='op'>=</span> <span class='va'>n</span> <span class='op'>/</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>n</span><span class='op'>)</span></span>
-<span><span class='va'>child_abortion_plot2</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Distance Traveled by Car (in Kilometers)"</span>,</span>
+<span>       y <span class='op'>=</span> <span class='st'>"Price of Car"</span>,</span>
+<span>       title <span class='op'>=</span> <span class='st'>"Relationship between distance traveled by car and selling price"</span><span class='op'>)</span></span></code></pre>
 </div>
-<pre><code># A tibble: 4 × 3
-  child_name abortion    prop
-  &lt;chr&gt;      &lt;chr&gt;      &lt;dbl&gt;
-1 Child      Pro-Choice 0.144
-2 Child      Pro-Life   0.113
-3 No Child   Pro-Choice 0.459
-4 No Child   Pro-Life   0.284</code></pre>
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>child_abortion_plot2</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>child_name</span>, y <span class='op'>=</span> <span class='va'>prop</span>, fill <span class='op'>=</span> <span class='va'>abortion</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span>position <span class='op'>=</span> <span class='st'>"dodge"</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Voters with Child under 18 years old"</span>,</span>
-<span>       y <span class='op'>=</span> <span class='st'>"Proportion of Voters"</span>,</span>
-<span>       title <span class='op'>=</span> <span class='st'>"Votes for Abortion by Parental Status (proportion of all observations)"</span><span class='op'>)</span></span></code></pre>
+<pre><code>$x
+[1] &quot;Distance Traveled by Car (in Kilometers)&quot;
+
+$y
+[1] &quot;Price of Car&quot;
+
+$title
+[1] &quot;Relationship between distance traveled by car and selling price&quot;
+
+attr(,&quot;class&quot;)
+[1] &quot;labels&quot;</code></pre>
 </div>
-<img src="index_files/figure-html5/unnamed-chunk-5-2.png" width="624" />
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>abortion_data</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/count.html'>count</a></span><span class='op'>(</span><span class='va'>child_name</span><span class='op'>)</span></span></code></pre>
-</div>
-<pre><code>  child_name     n
-1      Child 15532
-2   No Child 44340
-3       &lt;NA&gt;   128</code></pre>
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>abortion_data</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>mean_age <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span><span class='op'>(</span><span class='va'>age</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
-</div>
-<pre><code>  mean_age
-1 48.08623</code></pre>
-</div>
-<p>This first visualization analyzes the relationship between having a child under the age of 18 and opinion on abortion. The data depicts similar distributions between the parent and non-parent groups indicating no significant difference in opinion based on parental status. The second bar plot analyzes the proportions amongst all observations. The highest group was Pro-choice voters without a child. Having no child resulted in a higher proportion for both the pro-choice group and pro-life group. This might be due to the age of voters in this survey. The mean age is 48 years old and there were 15,417 more voters without a child under 18 years old than with. Therefore, more voters could have had children above the age of 18 and caused the results to appear as though parents were less likely to vote for abortion.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>parent_plot</span> <span class='op'>&lt;-</span> <span class='va'>abortion_data</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>child_name</span> <span class='op'>==</span> <span class='st'>"Child"</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/drop_na.html'>drop_na</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>gender_name</span>, <span class='va'>abortion</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/context.html'>n</a></span><span class='op'>(</span><span class='op'>)</span>, .groups <span class='op'>=</span> <span class='st'>"drop"</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>prop <span class='op'>=</span> <span class='va'>n</span> <span class='op'>/</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>n</span><span class='op'>)</span></span>
-<span><span class='va'>parent_plot</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>mult_fit2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>selling_price</span> <span class='op'>~</span> <span class='va'>km_driven</span> <span class='op'>+</span> <span class='va'>fuel</span> <span class='op'>+</span> <span class='va'>age</span>, data <span class='op'>=</span> <span class='va'>cars</span><span class='op'>)</span></span>
+<span><span class='va'>mult_fit2</span></span></code></pre>
 </div>
-<pre><code># A tibble: 4 × 3
-  gender_name abortion    prop
-  &lt;chr&gt;       &lt;chr&gt;      &lt;dbl&gt;
-1 female      Pro-Choice 0.387
-2 female      Pro-Life   0.278
-3 male        Pro-Choice 0.173
-4 male        Pro-Life   0.162</code></pre>
+<pre><code>
+Call:
+lm(formula = selling_price ~ km_driven + fuel + age, data = cars)
+
+Coefficients:
+(Intercept)    km_driven   fuelPetrol          age  
+  1.089e+06   -1.704e+00   -3.257e+05   -4.452e+04  </code></pre>
 <div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>parent_plot</span> <span class='op'>|&gt;</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>gender_name</span>, y <span class='op'>=</span> <span class='va'>prop</span>, fill <span class='op'>=</span> <span class='va'>abortion</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span>position <span class='op'>=</span> <span class='st'>"dodge"</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Gender"</span>,</span>
-<span>       y <span class='op'>=</span> <span class='st'>"Proportion of Voters"</span>,</span>
-<span>       title <span class='op'>=</span> <span class='st'>"Parents' Votes for Abortion By Gender"</span><span class='op'>)</span></span></code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://generics.r-lib.org/reference/glance.html'>glance</a></span><span class='op'>(</span><span class='va'>mult_fit2</span><span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="index_files/figure-html5/unnamed-chunk-6-1.png" width="624" /></p>
+<pre><code># A tibble: 1 × 12
+  r.squ…¹ adj.r…²  sigma stati…³   p.value    df  logLik    AIC    BIC
+    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+1   0.238   0.237 5.08e5    444. 4.81e-251     3 -62245. 1.25e5 1.25e5
+# … with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;,
+#   nobs &lt;int&gt;, and abbreviated variable names ¹​r.squared,
+#   ²​adj.r.squared, ³​statistic</code></pre>
 </div>
-<p>This barplot displays the proportion of parents who voted in support of pro-choice policy by gender. Based on this visualization, female voters who had at least 1 child under the age of 18 voted to support pro-choice over pro-life. Amongst all observations, female parents had the highest percentage of pro-choice voters of 39%. Male parents voting against freedom to have an abortion were the smallest group with 16%.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>fit_age</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>selling_price</span> <span class='op'>~</span> <span class='va'>age</span>, data <span class='op'>=</span> <span class='va'>cars</span><span class='op'>)</span></span>
+<span><span class='va'>fit_age</span></span></code></pre>
+</div>
+<pre><code>
+Call:
+lm(formula = selling_price ~ age, data = cars)
+
+Coefficients:
+(Intercept)          age  
+     901785       -57095  </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://generics.r-lib.org/reference/glance.html'>glance</a></span><span class='op'>(</span><span class='va'>fit_age</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 1 × 12
+  r.squ…¹ adj.r…²  sigma stati…³   p.value    df  logLik    AIC    BIC
+    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+1   0.171   0.171 5.30e5    882. 1.83e-176     1 -62424. 1.25e5 1.25e5
+# … with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;,
+#   nobs &lt;int&gt;, and abbreviated variable names ¹​r.squared,
+#   ²​adj.r.squared, ³​statistic</code></pre>
+</div>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>cars</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span>mapping <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>age</span>, y <span class='op'>=</span> <span class='va'>selling_price</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span>alpha <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_smooth.html'>geom_smooth</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"lm"</span>, se <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='st'>"Years since car was purchased"</span>,</span>
+<span>       y <span class='op'>=</span> <span class='st'>"Price of Car"</span>,</span>
+<span>       title <span class='op'>=</span> <span class='st'>"Relationship between car age and selling price"</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="index_files/figure-html5/unnamed-chunk-8-1.png" width="624" /></p>
+</div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

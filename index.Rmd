@@ -7,124 +7,105 @@ output:
     self_contained: false
 ---
 
-
-## Proposal
-Does having a child enhance support of abortion? In this study, I plan to examine the correlation between parental status and support of pro-choice policy. I hypothesize that having a child will increase support for abortion amongst female voters more than male voters. Access to abortion has been a key principle for feminist movements, so it would be likely that female voters would support the choice to have an abortion more than male voters. Female voters who have a child might be more supportive of pro-choice policy if they have a daughter and are concerned for their future, if they did not have access to abortion when they were pregnant, etc.  I will be analyzing data from the Cooperative Congressional Election Study (CCES) that was conducted in 2018. My explanatory variables include gender and child (being a parent/guardian to a child under the age of 18). These are measured through survey questions conducted by YouGov before the 2018 elections. My outcome variable of interest is an answer to a question of whether the voter supports or opposes the proposal to always allow a woman to obtain an abortion as a matter of choice (a measurement of pro-choice). If I observe greater support for this proposal amongst female parents/guardians, this would provide support for my hypothesis. If, on the other hand, I observe greater support for this proposal amongst male voters or no correlation between the child variable and the outcome, this would provide evidence against my hypothesis.
-
-```{r}
-load("~/Documents/Gov50/gov50-final-project/cces18_common_vv.RData")
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
-CCES18 <- x
-abortion_data <- CCES18 |>
-  mutate(
-    gender = if_else(gender == 1, 0, 1),
-    gender_name = if_else(gender == 1, "female", "male"),
-    educ_name = case_when(educ == c(1, 2, 3) ~ "Non-College Grad",
-                     educ == c(4, 5, 6) ~ "College Grad"),
-    party = case_when(pid3 == 1 ~ "Democrat",
-                     pid3 == 2 ~ "Republican",
-                     pid3 == c(3, 4, 5) ~ "Independent/Other"),
-    religion = if_else(religpew == 2, "Roman Catholic", "Non-Catholic"),
-    child = if_else(child18 == 1, 1, 0),
-    child_name = if_else(child18 == 1, "Child", "No Child"),
-    pro_choice = if_else(CC18_321a == 1, 1, 0),
-    abortion = if_else(CC18_321a == 1, "Pro-Choice", "Pro-Life"),
-    age = 2018 - birthyr
-  ) |>
-  select(age, gender, gender_name, educ, educ_name, pid3, party, religion, child, child_name, abortion, pro_choice) 
+library(infer)
 ```
 
 ```{r}
-gender_party_plot <- abortion_data |>
-  drop_na() |>
-  group_by(gender_name, party) |>
-  count(pro_choice) 
-gender_party_plot <- gender_party_plot |>
-  ggplot(mapping = aes(x = gender_name, y = n, fill = party)) +
-  geom_col(position = "dodge") +
-  labs(
-    x = "Gender and Party of Voter",
-    y = "Number of Pro-Choice Voters",
-    title = "Pro-Choice Voters by Gender and Party"
-  )
-gender_party_plot
+cars <- read_csv("CAR DETAILS FROM CAR DEKHO.csv")
+cars <- cars |>
+  filter(fuel %in% c("Diesel", "Petrol")) |>
+  mutate(age = 2020 - year)
+```
+
+```{r}
+cars |>
+  ggplot(mapping = aes(x = selling_price)) +
+  geom_histogram(color = "black", fill = "darkslategray1") +
+  labs(x = "Price of Used Car (in dollars)",
+       y = "Number of Cars Sold",
+       title = "Selling Prices of Used Cars") +
+  geom_vline(aes(xintercept = mean(selling_price)), color = "indianred") +
+  geom_vline(aes(xintercept = median(selling_price)), color = "blue1") +
+  theme_classic() 
+```
+```{r}
+cars |>
+  ggplot(mapping = aes(x = selling_price)) +
+  geom_histogram(color = "black", fill = "darkslategray1") +
+  labs(x = "Price of Used Car (in dollars)",
+       y = "Number of Cars Sold",
+       title = "Selling Prices of Used Cars") +
+  geom_vline(aes(xintercept = mean(selling_price)), color = "indianred") +
+  geom_vline(aes(xintercept = median(selling_price)), color = "blue1") +
+  theme_classic() +
+  facet_wrap(~ fuel)
 ```
 
 
 ```{r}
-abortion_data |>
-  drop_na() |>
-  group_by(abortion) |>
-  summarize(n = n()) |>
-  mutate(prop = n / sum(n))
+library(broom)
+
+fit_price <- lm(selling_price ~ km_driven, data = cars)
+fit_price
+glance(fit_price)
+
+mult_fit <- lm(selling_price ~ km_driven + fuel, data = cars)
+mult_fit
+glance(mult_fit)
+
+cars |>
+  ggplot(mapping = aes(x = km_driven, y = selling_price)) +
+  geom_point(alpha = 0.5) +
+  ylim(0, 10000000) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(x = "Distance Traveled by Car (in Kilometers)",
+       y = "Price of Car",
+       title = "Relationship between distance traveled by car and selling price")
 
 ```
-```{r}
-gender_abortion_plot <-abortion_data |>
-  drop_na()|>
-  group_by(gender_name, abortion) |>
-  summarize(n = n()) |>
-  mutate(prop = n / sum(n)) |>
-  select(-n)
-
-gender_abortion_plot
-gender_abortion_plot |>
-  ggplot(aes(x = gender_name, y = prop, fill = abortion)) +
-  geom_col(position = "dodge")
-
-```
-
-```{r}
-child_abortion_plot <-abortion_data |>
-  drop_na()|>
-  group_by(child_name, abortion) |>
-  summarize(n = n()) |>
-  mutate(prop = n / sum(n)) |>
-  select(-n)
-child_abortion_plot
-child_abortion_plot |>
-  ggplot(aes(x = child_name, y = prop, fill = abortion)) +
-  geom_col(position = "dodge") +
-  labs(x = "Voters with Child under 18 years old",
-       y = "Proportion of Voters (by parental status)",
-       title = "Votes on Abortion by Parental Status")
-
-child_abortion_plot2 <-abortion_data |>
-  drop_na()|>
-  group_by(child_name, abortion) |>
-  summarize(n = n(), .groups = "drop") |>
-  mutate(prop = n / sum(n)) |>
-  select(-n)
-child_abortion_plot2
-child_abortion_plot2 |>
-  ggplot(aes(x = child_name, y = prop, fill = abortion)) +
-  geom_col(position = "dodge") +
-  labs(x = "Voters with Child under 18 years old",
-       y = "Proportion of Voters",
-       title = "Votes for Abortion by Parental Status (proportion of all observations)")
-
-abortion_data |>
-  count(child_name)
-abortion_data |>
-  summarize(mean_age = mean(age))
-```
-This first visualization analyzes the relationship between having a child under the age of 18 and opinion on abortion. The data depicts similar distributions between the parent and non-parent groups indicating no significant difference in opinion based on parental status. The second bar plot analyzes the proportions amongst all observations. The highest group was Pro-choice voters without a child. Having no child resulted in a higher proportion for both the pro-choice group and pro-life group. This might be due to the age of voters in this survey. The mean age is 48 years old and there were 15,417 more voters without a child under 18 years old than with. Therefore, more voters could have had children above the age of 18 and caused the results to appear as though parents were less likely to vote for abortion.
 
 ```{r}
-parent_plot <- abortion_data |>
-  filter(child_name == "Child") |>
-  drop_na()|>
-  group_by(gender_name, abortion) |>
-  summarize(n = n(), .groups = "drop") |>
-  mutate(prop = n / sum(n)) |>
-  select(-n)
-parent_plot
-parent_plot |>
-  ggplot(aes(x = gender_name, y = prop, fill = abortion)) +
-  geom_col(position = "dodge") +
-  labs(x = "Gender",
-       y = "Proportion of Voters",
-       title = "Parents' Votes for Abortion By Gender")
-
+## remove outliers
+cars_edit <- cars |>
+  filter(km_driven < 5e+05 & selling_price < 7500000)
+edit_fit <-
+  lm(selling_price ~ km_driven, data = cars_edit)
+edit_fit
+cars_edit |>
+  ggplot(mapping = aes(x = km_driven, y = selling_price)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE)
+  labs(x = "Distance Traveled by Car (in Kilometers)",
+       y = "Price of Car",
+       title = "Relationship between distance traveled by car and selling price")
 ```
-This barplot displays the proportion of parents who voted in support of pro-choice policy by gender. Based on this visualization, female voters who had at least 1 child under the age of 18 voted to support pro-choice over pro-life. Amongst all observations, female parents had the highest percentage of pro-choice voters of 39%. Male parents voting against freedom to have an abortion were the smallest group with 16%.
+
+```{r}
+mult_fit2 <- lm(selling_price ~ km_driven + fuel + age, data = cars)
+mult_fit2
+glance(mult_fit2)
+```
+
+```{r}
+fit_age <- lm(selling_price ~ age, data = cars)
+fit_age
+glance(fit_age)
+```
+
+
+
+```{r}
+cars |>
+  ggplot(mapping = aes(x = age, y = selling_price)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(x = "Years since car was purchased",
+       y = "Price of Car",
+       title = "Relationship between car age and selling price")
+```
+
+
+
