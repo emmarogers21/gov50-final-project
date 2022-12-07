@@ -15,7 +15,7 @@ library(infer)
 
 ## Introduction
 
-What factors or characteristics most affect the selling price of used cars? I hypothesize that the distance traveled by a car will have the greatest effect on the selling price and as the distance traveled by a car increases, the cost of this car will decrease. Cars that have been driven more kilometers are worth less than those that have not. This is because the distance a car has traveled indicates how much work and repair the car might need and how much more life the next owner will get out of the car. To examine this relationship, I will be using data scraped from the CarDeckho, India’s leading car search website. All variables are measured from the vehicle information included on used car sales listings on CarDeckho in the year 2020. My dependent variable is the selling price of cars, and the independent variables include kilometers driven (continuous), fuel type (binary: Petrol, Diesel) and car age/years since car was first purchased (continuous). The research design for this study is cross-sectional as it is examining the outcome and explanatory variables at one point in time.
+What factors or characteristics most affect the selling price of used cars? I hypothesize that the distance traveled by a car will have the greatest effect on the selling price and as the distance traveled by a car increases, the cost of this car will decrease. Cars that have been driven more kilometers are worth less than those that have not. This is because the distance a car has traveled indicates how much work and repair the car might need and how much more life the next owner will get out of the car. To examine this relationship, I will be using data scraped from CarDeckho, India’s leading car search website. All variables are measured from the vehicle information included on used car sales listings on CarDeckho in the year 2020. My dependent variable is the selling price of cars, and the independent variables include kilometers driven (continuous), fuel type (binary: Petrol, Diesel) and car age/years since car was first purchased (continuous). The research design for this study is cross-sectional as it is examining the outcome and explanatory variables at one point in time.
 
 
 ```{r, echo = FALSE}
@@ -53,14 +53,18 @@ cars |>
 ```
 
 
-```{r}
+```{r, echo = FALSE, results= 'hide'}
 library(broom)
 
-## regression: price and km_driven
-fit_price <- lm(selling_price ~ km_driven, data = cars)
-fit_price
-glance(fit_price)
+## Regression: price and km_driven
+fit_1 <- lm(selling_price ~ km_driven, data = cars)
+fit_1
+glance(fit_1)
 
+## Correlation
+cor_pr_dist <- cor(cars$selling_price, cars$km_driven)
+
+## Scatterplot 1
 cars |>
   ggplot(mapping = aes(x = km_driven, y = selling_price)) +
   geom_point(alpha = 0.5) +
@@ -68,55 +72,130 @@ cars |>
   geom_smooth(method = "lm", se = FALSE) +
   labs(x = "Distance Traveled by Car (in Kilometers)",
        y = "Price of Car",
-       title = "Relationship between distance traveled by car and selling price")
+       title = "Relationship between distance traveled by car and selling price") +
+  theme_bw()
 
 ```
 
-```{r}
-## remove outliers
+
+```{r, echo = FALSE, results= 'hide'}
+## Fit 1 w/out outliers
 cars_edit <- cars |>
   filter(km_driven < 5e+05 & selling_price < 7500000)
 edit_fit <-
   lm(selling_price ~ km_driven, data = cars_edit)
 edit_fit
+
+## scatterplot 1 w/out outliers
 cars_edit |>
   ggplot(mapping = aes(x = km_driven, y = selling_price)) +
   geom_point(alpha = 0.5) +
-  geom_smooth(method = "lm", se = FALSE)
+  geom_smooth(method = "lm", se = FALSE) +
   labs(x = "Distance Traveled by Car (in Kilometers)",
        y = "Price of Car",
-       title = "Relationship between distance traveled by car and selling price")
+       title = "Relationship between distance traveled and selling price (w/out outliers)") +
+  theme_bw()
 ```
-```{r}
-mult_fit <- lm(selling_price ~ km_driven + fuel, data = cars)
-mult_fit
-glance(mult_fit)
+There is a negative correlation between distance traveled and the selling price at a value of -0.19.
+
+```{r, echo = FALSE, results= 'hide'}
+## Multiple Regression: km_driven + fuel
+mult_fit1 <- lm(selling_price ~ km_driven + fuel, data = cars)
+mult_fit1
+glance(mult_fit1)
 ```
 
-
-```{r}
-mult_fit2 <- lm(selling_price ~ km_driven + fuel + age, data = cars)
+```{r, echo = FALSE, results= 'hide'}
+## Mult Regression: km_driven + age
+mult_fit2 <- lm(selling_price ~ km_driven + age, data = cars)
 mult_fit2
-glance(mult_fit2)
 ```
 
-```{r}
+```{r, echo = FALSE, results= 'hide'}
+## Multiple Regression: km_driven + fuel + age
+mult_fit4 <- lm(selling_price ~ km_driven + fuel + age, data = cars)
+mult_fit4
+glance(mult_fit4)
+```
+
+```{r, echo = FALSE, results= 'hide'}
+## Regression w/ age
 fit_age <- lm(selling_price ~ age, data = cars)
 fit_age
 glance(fit_age)
+
+cor_pr_age <- cor(cars$selling_price, cars$age)
+
+```
+
+```{r, echo = FALSE, results = 'hide'}
+mult_fit3 <- lm(selling_price ~ fuel + age, data = cars)
+mult_fit3
 ```
 
 
-
-```{r}
+```{r, echo = FALSE, results= 'hide'}
+## Scatterplot for age and price
 cars |>
   ggplot(mapping = aes(x = age, y = selling_price)) +
   geom_point(alpha = 0.5) +
   geom_smooth(method = "lm", se = FALSE) +
   labs(x = "Years since car was purchased",
        y = "Price of Car",
-       title = "Relationship between car age and selling price")
+       title = "Relationship between car age and selling price") +
+  theme_bw()
 ```
+There is a negative correlation between age and selling price at a value of -0.41.
+
+```{r, echo= FALSE, results = 'hide'}
+## correlation between age and dist
+cor_dist_age <- cor(cars$km_driven, cars$age)
+
+## scatterplot between age and dist
+cars |>
+  ggplot(mapping = aes(x = km_driven, y = age)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(x = "Distance Traveled by Car (in Km)",
+       y = "Years since car was purchased",
+       title = "Relationship between distance traveled and car age") +
+  theme_bw()
+```
+There is a positive correlation of 0.42 between two of our independent variables: age and km_driven.
+
+```{r, echo = FALSE}
+## Regressions Table
+modelsummary::modelsummary(
+  statistic = c("s.e. = {std.error}",
+               "p = {p.value}"),
+  list(fit_1, mult_fit1, mult_fit2, mult_fit3, mult_fit4),
+  gof_map = c("nobs", "r.squared", "adj.r.squared")) 
+```
+
+## Results
+
+```{r, echo = FALSE}
+cars |>
+  ggplot(mapping = aes(x = age, y = selling_price)) +
+  geom_point(mapping = aes(color = km_driven), alpha = 0.5) +
+  scale_color_distiller(palette = "Spectral") +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(x = "Years since car was purchased",
+       y = "Price of Car",
+       title = "Main regression") +
+  theme_bw() +
+  facet_wrap(~ fuel)
+```
+
+```{r}
+## Main Regression of interest
+modelsummary::modelsummary(
+  statistic = c("s.e. = {std.error}",
+               "p = {p.value}"),
+  list(mult_fit4),
+  gof_map = c("nobs", "r.squared", "adj.r.squared"))
+```
+
 
 
 
