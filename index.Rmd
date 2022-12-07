@@ -13,14 +13,21 @@ library(tidyverse)
 library(infer)
 ```
 
-```{r}
+## Introduction
+
+What factors or characteristics most affect the selling price of used cars? I hypothesize that the distance traveled by a car will have the greatest effect on the selling price and as the distance traveled by a car increases, the cost of this car will decrease. Cars that have been driven more kilometers are worth less than those that have not. This is because the distance a car has traveled indicates how much work and repair the car might need and how much more life the next owner will get out of the car. To examine this relationship, I will be using data scraped from the CarDeckho, India’s leading car search website. All variables are measured from the vehicle information included on used car sales listings on CarDeckho in the year 2020. My dependent variable is the selling price of cars, and the independent variables include kilometers driven (continuous), fuel type (binary: Petrol, Diesel) and car age/years since car was first purchased (continuous). The research design for this study is cross-sectional as it is examining the outcome and explanatory variables at one point in time.
+
+
+```{r, echo = FALSE}
 cars <- read_csv("CAR DETAILS FROM CAR DEKHO.csv")
 cars <- cars |>
   filter(fuel %in% c("Diesel", "Petrol")) |>
   mutate(age = 2020 - year)
 ```
 
-```{r}
+
+```{r, echo = FALSE}
+## summarize dependent variable
 cars |>
   ggplot(mapping = aes(x = selling_price)) +
   geom_histogram(color = "black", fill = "darkslategray1") +
@@ -31,7 +38,8 @@ cars |>
   geom_vline(aes(xintercept = median(selling_price)), color = "blue1") +
   theme_classic() 
 ```
-```{r}
+```{r, echo = FALSE}
+## summarize price by fuel type
 cars |>
   ggplot(mapping = aes(x = selling_price)) +
   geom_histogram(color = "black", fill = "darkslategray1") +
@@ -48,13 +56,10 @@ cars |>
 ```{r}
 library(broom)
 
+## regression: price and km_driven
 fit_price <- lm(selling_price ~ km_driven, data = cars)
 fit_price
 glance(fit_price)
-
-mult_fit <- lm(selling_price ~ km_driven + fuel, data = cars)
-mult_fit
-glance(mult_fit)
 
 cars |>
   ggplot(mapping = aes(x = km_driven, y = selling_price)) +
@@ -82,6 +87,12 @@ cars_edit |>
        y = "Price of Car",
        title = "Relationship between distance traveled by car and selling price")
 ```
+```{r}
+mult_fit <- lm(selling_price ~ km_driven + fuel, data = cars)
+mult_fit
+glance(mult_fit)
+```
+
 
 ```{r}
 mult_fit2 <- lm(selling_price ~ km_driven + fuel + age, data = cars)
