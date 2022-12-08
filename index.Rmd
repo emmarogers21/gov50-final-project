@@ -1,7 +1,7 @@
 ---
 title: "Gov 50 Final Project"
 author: "Emma Rogers"
-description: "My final project"
+description: "Prices of Used Cars"
 output:
   distill::distill_article:
     self_contained: false
@@ -33,7 +33,8 @@ cars |>
   geom_histogram(color = "black", fill = "darkslategray1") +
   labs(x = "Price of Used Car (in dollars)",
        y = "Number of Cars Sold",
-       title = "Selling Prices of Used Cars") +
+       title = "Selling Prices of Used Cars",
+       tag = "Figure 1:") +
   geom_vline(aes(xintercept = mean(selling_price)), color = "indianred") +
   geom_vline(aes(xintercept = median(selling_price)), color = "blue1") +
   theme_classic() 
@@ -45,7 +46,8 @@ cars |>
   geom_histogram(color = "black", fill = "darkslategray1") +
   labs(x = "Price of Used Car (in dollars)",
        y = "Number of Cars Sold",
-       title = "Selling Prices of Used Cars") +
+       title = "Selling Prices of Used Cars",
+       tag = "Figure 2:") +
   geom_vline(aes(xintercept = mean(selling_price)), color = "indianred") +
   geom_vline(aes(xintercept = median(selling_price)), color = "blue1") +
   theme_classic() +
@@ -72,7 +74,8 @@ cars |>
   geom_smooth(method = "lm", se = FALSE) +
   labs(x = "Distance Traveled by Car (in Kilometers)",
        y = "Price of Car",
-       title = "Relationship between distance traveled by car and selling price") +
+       title = "Correlation: Distance Traveled By Car vs Selling Price",
+       tag = "Figure 3:") +
   theme_bw()
 
 ```
@@ -93,7 +96,8 @@ cars_edit |>
   geom_smooth(method = "lm", se = FALSE) +
   labs(x = "Distance Traveled by Car (in Kilometers)",
        y = "Price of Car",
-       title = "Relationship between distance traveled and selling price (w/out outliers)") +
+       title = "Correlation: Distance Traveled vs Selling Price (w/out outliers)",
+       tag = "Figure 4:") +
   theme_bw()
 ```
 There is a negative correlation between distance traveled and the selling price at a value of -0.19.
@@ -142,7 +146,8 @@ cars |>
   geom_smooth(method = "lm", se = FALSE) +
   labs(x = "Years since car was purchased",
        y = "Price of Car",
-       title = "Relationship between car age and selling price") +
+       title = "Correlation: Car Age vs Selling Price",
+       tag = "Figure 5:") +
   theme_bw()
 ```
 There is a negative correlation between age and selling price at a value of -0.41.
@@ -158,18 +163,33 @@ cars |>
   geom_smooth(method = "lm", se = FALSE) +
   labs(x = "Distance Traveled by Car (in Km)",
        y = "Years since car was purchased",
-       title = "Relationship between distance traveled and car age") +
+       title = "Correlation: Distance Traveled By Car vs Car Age",
+       tag = "Figure 6:") +
   theme_bw()
 ```
 There is a positive correlation of 0.42 between two of our independent variables: age and km_driven.
 
 ```{r, echo = FALSE}
 ## Regressions Table
+var_labels <- c(
+  "(Intercept)" = "Intercept",
+  "km_driven" = "Km Driven",
+  "fuelPetrol" = "Petrol Fuel vs Diesel",
+  "age" = "Age"
+)
+
 modelsummary::modelsummary(
   statistic = c("s.e. = {std.error}",
                "p = {p.value}"),
-  list(fit_1, mult_fit1, mult_fit2, mult_fit3, mult_fit4),
-  gof_map = c("nobs", "r.squared", "adj.r.squared")) 
+  list(
+    "Model 1" = fit_1,
+    "Model 2" = mult_fit1, 
+    "Model 3" = mult_fit2, 
+    "Model 4" = mult_fit3, 
+    "Final Model" = mult_fit4),
+  coef_map = var_labels,
+  title = "Regression Table",
+  gof_map = c("nobs", "r.squared", "adj.r.squared"))
 ```
 
 ## Results
@@ -182,20 +202,26 @@ cars |>
   geom_smooth(method = "lm", se = FALSE) +
   labs(x = "Years since car was purchased",
        y = "Price of Car",
-       title = "Main regression") +
+       title = "Main regression",
+       tag = "Figure 7:") +
   theme_bw() +
   facet_wrap(~ fuel)
 ```
 
-```{r}
+```{r, echo = FALSE}
 ## Main Regression of interest
 modelsummary::modelsummary(
   statistic = c("s.e. = {std.error}",
                "p = {p.value}"),
-  list(mult_fit4),
+  list(
+    "Final Model" = mult_fit4),
+  title = "Main Regression of Interest",
+  coef_map = var_labels,
   gof_map = c("nobs", "r.squared", "adj.r.squared"))
 ```
 
+
+Although the kilometers driven by a car does have a negative correlation with the selling price, age of the car has the greatest effect on the outcome variable. While keeping km driven and fuel constant, with every 1 year increase in age, the selling price of a car decreases by $44,521.46. With a test level of 0.05, the estimated coefficient of age is statistically significant as the p-value is approximately zero. Though there is a significant correlation of 0.42 between age and the price of a used car, this relationship cannot be interpreted causally. This is due to the multiple possible confounders that are not measured in this dataset that could be affecting the selling price of a car. Possible confounders include the exterior condition of the car, special features and technology, and number of seats. Without accounting for these other variables and their impacts on the outcome variable, we can not conclude that the coefficient of car age represents a causal effect.
 
 
 

@@ -90,7 +90,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_meta_tags-->
   <title>Gov 50 Final Project</title>
 
-  <meta property="description" itemprop="description" content="My final project"/>
+  <meta property="description" itemprop="description" content="Prices of Used Cars"/>
 
 
   <meta name="article:author" content="Emma Rogers"/>
@@ -98,19 +98,19 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
   <meta property="og:title" content="Gov 50 Final Project"/>
   <meta property="og:type" content="article"/>
-  <meta property="og:description" content="My final project"/>
+  <meta property="og:description" content="Prices of Used Cars"/>
   <meta property="og:locale" content="en_US"/>
 
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
   <meta property="twitter:title" content="Gov 50 Final Project"/>
-  <meta property="twitter:description" content="My final project"/>
+  <meta property="twitter:description" content="Prices of Used Cars"/>
 
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","author","description","output"]}},"value":[{"type":"character","attributes":{},"value":["Gov 50 Final Project"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Emma Rogers"]}]}]},{"type":"character","attributes":{},"value":["My final project"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","author","description","output"]}},"value":[{"type":"character","attributes":{},"value":["Gov 50 Final Project"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Emma Rogers"]}]}]},{"type":"character","attributes":{},"value":["Prices of Used Cars"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -1495,7 +1495,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Gov 50 Final Project","description":"My final project","authors":[{"author":"Emma Rogers","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}]}
+{"title":"Gov 50 Final Project","description":"Prices of Used Cars","authors":[{"author":"Emma Rogers","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}]}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1508,7 +1508,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <h1>Gov 50 Final Project</h1>
 <!--radix_placeholder_categories-->
 <!--/radix_placeholder_categories-->
-<p>My final project</p>
+<p>Prices of Used Cars</p>
 </div>
 
 <div class="d-byline">
@@ -1562,6 +1562,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p>There is a positive correlation of 0.42 between two of our independent variables: age and km_driven.</p>
 <div class="layout-chunk" data-layout="l-body">
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-13">Table 1: </span>Regression Table
+</caption>
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -1579,14 +1582,14 @@ Model 3
 Model 4
 </th>
 <th style="text-align:center;">
-Model 5
+Final Model
 </th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align:left;">
-(Intercept)
+Intercept
 </td>
 <td style="text-align:center;">
 664820.724
@@ -1644,7 +1647,7 @@ p = &lt;0.001
 </tr>
 <tr>
 <td style="text-align:left;">
-km_driven
+Km Driven
 </td>
 <td style="text-align:center;">
 −2.372
@@ -1699,7 +1702,7 @@ p = &lt;0.001
 </tr>
 <tr>
 <td style="text-align:left;">
-fuelPetrol
+Petrol Fuel vs Diesel
 </td>
 <td style="text-align:center;">
 </td>
@@ -1751,7 +1754,7 @@ p = &lt;0.001
 </tr>
 <tr>
 <td style="text-align:left;">
-age
+Age
 </td>
 <td style="text-align:center;">
 </td>
@@ -1869,28 +1872,23 @@ R2 Adj.
 <p><img src="index_files/figure-html5/unnamed-chunk-14-1.png" width="624" /></p>
 </div>
 <div class="layout-chunk" data-layout="l-body">
-<div class="sourceCode">
-<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'>## Main Regression of interest</span></span>
-<span><span class='fu'>modelsummary</span><span class='fu'>::</span><span class='fu'><a href='https://vincentarelbundock.github.io/modelsummary/reference/modelsummary.html'>modelsummary</a></span><span class='op'>(</span></span>
-<span>  statistic <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"s.e. = {std.error}"</span>,</span>
-<span>               <span class='st'>"p = {p.value}"</span><span class='op'>)</span>,</span>
-<span>  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>mult_fit4</span><span class='op'>)</span>,</span>
-<span>  gof_map <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"nobs"</span>, <span class='st'>"r.squared"</span>, <span class='st'>"adj.r.squared"</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
-</div>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-15">Table 2: </span>Main Regression of Interest
+</caption>
 <thead>
 <tr>
 <th style="text-align:left;">
 </th>
 <th style="text-align:center;">
-Model 1
+Final Model
 </th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align:left;">
-(Intercept)
+Intercept
 </td>
 <td style="text-align:center;">
 1089397.527
@@ -1912,7 +1910,7 @@ p = &lt;0.001
 </tr>
 <tr>
 <td style="text-align:left;">
-km_driven
+Km Driven
 </td>
 <td style="text-align:center;">
 −1.704
@@ -1934,7 +1932,7 @@ p = &lt;0.001
 </tr>
 <tr>
 <td style="text-align:left;">
-fuelPetrol
+Petrol Fuel vs Diesel
 </td>
 <td style="text-align:center;">
 −325747.334
@@ -1956,7 +1954,7 @@ p = &lt;0.001
 </tr>
 <tr>
 <td style="text-align:left;">
-age
+Age
 </td>
 <td style="text-align:center;">
 −44521.457
@@ -2003,6 +2001,7 @@ R2 Adj.
 </tbody>
 </table>
 </div>
+<p>Although the kilometers driven by a car does have a negative correlation with the selling price, age of the car has the greatest effect on the outcome variable. While keeping km driven and fuel constant, with every 1 year increase in age, the selling price of a car decreases by $44,521.46. With a test level of 0.05, the estimated coefficient of age is statistically significant as the p-value is approximately zero. Though there is a significant correlation of 0.42 between age and the price of a used car, this relationship cannot be interpreted causally. This is due to the multiple possible confounders that are not measured in this dataset that could be affecting the selling price of a car. Possible confounders include the exterior condition of the car, special features and technology, and number of seats. Without accounting for these other variables and their impacts on the outcome variable, we can not conclude that the coefficient of car age represents a causal effect.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
