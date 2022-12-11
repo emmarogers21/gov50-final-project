@@ -19,6 +19,7 @@ What factors or characteristics most affect the selling price of used cars? I hy
 
 
 ```{r, echo = FALSE}
+## Loading Data
 cars <- read_csv("CAR DETAILS FROM CAR DEKHO.csv")
 cars <- cars |>
   filter(fuel %in% c("Diesel", "Petrol")) |>
@@ -58,12 +59,7 @@ cars |>
 ```{r, echo = FALSE, results= 'hide'}
 library(broom)
 
-## Regression: price and km_driven
-fit_1 <- lm(selling_price ~ km_driven, data = cars)
-fit_1
-glance(fit_1)
-
-## Correlation
+## Correlation between price and distance
 cor_pr_dist <- cor(cars$selling_price, cars$km_driven)
 
 ## Scatterplot 1
@@ -82,7 +78,7 @@ cars |>
 
 
 ```{r, echo = FALSE, results= 'hide'}
-## Fit 1 w/out outliers
+## Figure 3 w/out outliers
 cars_edit <- cars |>
   filter(km_driven < 5e+05 & selling_price < 7500000)
 edit_fit <-
@@ -102,43 +98,11 @@ cars_edit |>
 ```
 There is a negative correlation between distance traveled and the selling price at a value of -0.19.
 
-```{r, echo = FALSE, results= 'hide'}
-## Multiple Regression: km_driven + fuel
-mult_fit1 <- lm(selling_price ~ km_driven + fuel, data = cars)
-mult_fit1
-glance(mult_fit1)
-```
 
 ```{r, echo = FALSE, results= 'hide'}
-## Mult Regression: km_driven + age
-mult_fit2 <- lm(selling_price ~ km_driven + age, data = cars)
-mult_fit2
-```
-
-```{r, echo = FALSE, results= 'hide'}
-## Multiple Regression: km_driven + fuel + age
-mult_fit4 <- lm(selling_price ~ km_driven + fuel + age, data = cars)
-mult_fit4
-glance(mult_fit4)
-```
-
-```{r, echo = FALSE, results= 'hide'}
-## Regression w/ age
-fit_age <- lm(selling_price ~ age, data = cars)
-fit_age
-glance(fit_age)
-
+## correlation w/ age
 cor_pr_age <- cor(cars$selling_price, cars$age)
 
-```
-
-```{r, echo = FALSE, results = 'hide'}
-mult_fit3 <- lm(selling_price ~ fuel + age, data = cars)
-mult_fit3
-```
-
-
-```{r, echo = FALSE, results= 'hide'}
 ## Scatterplot for age and price
 cars |>
   ggplot(mapping = aes(x = age, y = selling_price)) +
@@ -182,14 +146,15 @@ modelsummary::modelsummary(
   statistic = c("s.e. = {std.error}",
                "p = {p.value}"),
   list(
-    "Model 1" = fit_1,
-    "Model 2" = mult_fit1, 
-    "Model 3" = mult_fit2, 
-    "Model 4" = mult_fit3, 
-    "Final Model" = mult_fit4),
+    "Model 1" = lm(selling_price ~ km_driven, data = cars),
+    "Model 2" = lm(selling_price ~ km_driven + age, data = cars), 
+    "Model 3" = lm(selling_price ~ age, data = cars),
+    "Model 4" = lm(selling_price ~ fuel + age, data = cars),
+    "Model 5" = lm(selling_price ~ km_driven + fuel + age, data = cars)),
   coef_map = var_labels,
   title = "Regression Table",
   gof_map = c("nobs", "r.squared", "adj.r.squared"))
+
 ```
 
 ## Results
@@ -206,6 +171,7 @@ cars |>
        tag = "Figure 7:") +
   theme_bw() +
   facet_wrap(~ fuel)
+
 ```
 
 ```{r, echo = FALSE}
@@ -214,18 +180,18 @@ modelsummary::modelsummary(
   statistic = c("s.e. = {std.error}",
                "p = {p.value}"),
   list(
-    "Final Model" = mult_fit4),
+    "Model 4" = lm(selling_price ~ fuel + age, data = cars)),
   title = "Main Regression of Interest",
   coef_map = var_labels,
   gof_map = c("nobs", "r.squared", "adj.r.squared"))
 ```
 
 
-Although the kilometers driven by a car does have a negative correlation with the selling price, age of the car has the greatest effect on the outcome variable. While keeping km driven and fuel constant, a 1 year increase in age is associated with a $44,521.46 decrease in the selling price of a car. With a test level of 0.05, the estimated coefficient of age is statistically significant as the p-value is approximately zero. Though there is a significant correlation of 0.42 between age and the price of a used car, this relationship cannot be interpreted causally. This is due to the multiple possible confounders that are not measured in this dataset that could be affecting the selling price of a car. Possible confounders include the exterior condition of the car, special features and technology, and number of seats. Without accounting for these other variables and their impacts on the outcome variable, we can not conclude that the coefficient of car age represents a causal effect.
+Although the kilometers driven by a car does have a negative correlation with the selling price, age of the car has the greatest effect on the outcome variable. While keeping fuel constant, a 1 year increase in age is associated with a $53,247.31 decrease in the selling price of a car. With a test level of 0.05, the estimated coefficient of age is statistically significant as the p-value is approximately zero. Though there is a significant correlation of 0.42 between age and the price of a used car, this relationship cannot be interpreted causally. This is due to the multiple possible confounders that are not measured in this dataset that could be affecting the selling price of a car. Possible confounders include the exterior condition of the car, special features and technology, and number of seats. Without accounting for these other variables and their impacts on the outcome variable, we can not conclude that the coefficient of car age represents a causal effect.
 
 ## Conclusion
 
 Through analyzing this data, we found that distance traveled by a car does have a negative correlation with its selling price. However, after running regressions accounting for multiple independent variables, the distance traveled had a lesser effect on selling price than I had expected.
 
-First, figure 3 displays the relationship between the independent variable km_driven and the outcome variable selling price. Figure 4 is a replication of figure 3 with some extreme outliers filtered out. This scatterplot displays a negative correlation of -0.19 between distance traveled and selling price indicating that a 1 Km increase in distance traveled is associated with a decrease in selling price of $2.37. After exploring this initial relationship, I completed a number of regressions with different combinations of variables to compare the effects each variable had on the outcome. When accounting for fuel and age in addition to km_driven in the Final Model, the magnitude of effect that km_driven had on the selling price decreased significantly while the R2 value increased significantly. This displayed that age and fuel were important to include as they had strong effects on the outcome. This brought me to explore the age variable more closely, since in model 3, which included age and km_driven as independent variables, the effect of km_driven decreased to -0.259 from -2.372 (its effect on the outcome without accounting for other variables). Figure 5 shows the relationship between car age and selling price which is a negative correlation of -0.41 demonstrating a much stronger association than that of km_driven and price. A threat to inference is the correlation between km_driven and age. In figure 6, there is a strong positive correlation between km_driven and age of 0.42. This makes logical sense because the longer an owner has a car, the more likely they are to have driven more kilometers. This might be impacting our interpretation of the effects of each individual variable because we cannot be sure that our coefficient represents a case when the other independent variable is constant; if one variable is correlated with another, then a change in one variable could result in a change in the other. It would be ideal if all independent variables were truly independent from one another, however, since both variables have an effect on the outcome it is important to account for both. In future studies, it would be better to utilize variables that have no correlation with one another to capture a fairer estimate of each variable’s effects. 
-
+First, figure 3 displays the relationship between the independent variable km_driven and the outcome variable selling price. Figure 4 is a replication of figure 3 with some extreme outliers filtered out to see this relationship more clearly. This scatterplot displays a negative correlation of -0.19 between distance traveled and selling price indicating that a 1 Km increase in distance traveled is associated with a decrease in selling price of $2.37. The correlation coefficient for km_driven has a p-value of approximately 0 which is statistically significant at a test level of 0.05. However, the R squared value for this simple regression was 0.036, a very low value that suggests that this model does not fit the data well. After exploring this initial relationship, I completed a number of regressions with different combinations of variables to compare the effects each variable had on the outcome. In Model 2, I accounted for both km driven and age of a car and the R squared value rose to 0.171. While keeping km driven constant, an increase in 1 year of age is associated with a $55,887.30 decrease in price at a p-value of 0. With the addition of such a significant independent variable, the effect of km driven on selling price holding age constant decreased to -0.259 at a p-value of 0.174. By including more information in the regression, model 2 displays how age is a lot more important than distance. Figure 5 demonstrates the stronger correlation between age and selling price of -0.41. Then, I ran a simple regression with age and selling price and a 1 year increase in age is associated with a decrease in selling price of $57094.54. This model has the same R squared value as model 2 of 0.171 which means that km driven does not add or help this model. By calculating and visualizing the relationship between distance traveled and car age in Figure 6, I discovered there is a positive correlation of 0.42 and therefore some colinearity affecting these regressions. This makes logical sense because the longer an owner has a car, the more likely they are to have driven more kilometers. This might be impacting our interpretation of the effects of each individual variable because we cannot be sure that our coefficient represents a case when the other independent variable is constant. Because of the redundancy of this collinearity, we can remove km driven without strongly affecting the fit of the model. Next, I ran a multiple regression with fuel and age as independent variables and the R squared value increased to 0.224 which displays that fuel type has a significant effect on the selling price (Model 4). Finally, I tried a regression with all three independent variables, and the performance only increased by 0.014 (Model 5). This confirmed my decision to use Model 4 and leave out km driven because according to Ocaam’s Razor it is better to use the simpler model and only use the independent variables that improve the model’s performance. 
+	In this analysis, a threat to inference is omitted variable bias because we are leaving out a variable (km driven) which is statistically significant on its own. Therefore, our results might not be accurate because we are not accounting for a variable that does have some effect on the outcome. However, because of the collinearity between age and km driven, it is better to leave out this variable as collinearity is a larger threat to inference than omitting a variable. In future work, this analysis could be improved by collecting more information on the car. As I stated above, there are many possible confounders that are not measured in this data set such as the exterior appearance of the car that would most likely have strong impacts on the selling price of a car. 
