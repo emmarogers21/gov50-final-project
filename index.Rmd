@@ -170,7 +170,6 @@ cars |>
        tag = "Figure 7:",
        color = "Fuel") +
   theme_bw()
-
 ```
 
 ```{r, echo = FALSE}
